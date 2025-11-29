@@ -1,0 +1,5 @@
+{
+  "name": "LifeOS - 多合一生活助手",
+  "description": "基于本地优先的全能生产力套件，包含12个实用工具，如AI菜谱、记账、专注时钟等。支持离线使用与可选的云端同步。",
+  "requestFramePermissions": []
+}
