@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![LifeOS Banner](https://via.placeholder.com/1200x300/6366f1/ffffff?text=LifeOS+%7C+Local-First+Personal+Operating+System)
+![LifeOS Banner]([https://via.placeholder.com/1200x300/6366f1/ffffff?text=LifeOS+%7C+Local-First+Personal+Operating+System](https://youke1.picui.cn/s1/2025/12/01/692da1d1789dc.png))
 
 **一个应用，替代你的 12 个 App。**
 
