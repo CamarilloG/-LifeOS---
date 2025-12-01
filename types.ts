@@ -71,6 +71,29 @@ export interface SavedRecipe extends Recipe {
     savedAt: string;
 }
 
+// Travel Types
+export interface TravelActivity {
+  time: string;
+  activity: string;
+  description: string;
+  budget: string;
+}
+
+export interface TravelDay {
+  day: number;
+  theme: string;
+  activities: {
+    morning: TravelActivity;
+    afternoon: TravelActivity;
+    evening: TravelActivity;
+  };
+}
+
+export interface TravelItinerary {
+  city: string;
+  days: TravelDay[];
+}
+
 // Flashcard Types
 export interface Flashcard {
   id: string;

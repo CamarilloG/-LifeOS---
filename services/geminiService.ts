@@ -1,4 +1,6 @@
+
 import { GoogleGenAI, Type, Schema } from "@google/genai";
+import { TravelItinerary } from "../types";
 
 const apiKey = process.env.API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
@@ -36,6 +38,42 @@ const recipeSchema: Schema = {
   }
 };
 
+// Schema for Travel Generator
+const activitySchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        time: { type: Type.STRING },
+        activity: { type: Type.STRING },
+        description: { type: Type.STRING },
+        budget: { type: Type.STRING, enum: ["Low", "Medium", "High"] }
+    }
+};
+
+const travelSchema: Schema = {
+    type: Type.OBJECT,
+    properties: {
+        city: { type: Type.STRING },
+        days: {
+            type: Type.ARRAY,
+            items: {
+                type: Type.OBJECT,
+                properties: {
+                    day: { type: Type.NUMBER },
+                    theme: { type: Type.STRING },
+                    activities: {
+                        type: Type.OBJECT,
+                        properties: {
+                            morning: activitySchema,
+                            afternoon: activitySchema,
+                            evening: activitySchema
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
 export const generateRecipes = async (ingredients: string[]): Promise<any> => {
   if (!apiKey) throw new Error("API Key missing");
 
@@ -62,18 +100,26 @@ export const generateRecipes = async (ingredients: string[]): Promise<any> => {
   }
 };
 
-export const generateTravelItinerary = async (city: string, days: number): Promise<string> => {
+export const generateTravelItinerary = async (city: string, days: number): Promise<TravelItinerary | null> => {
     if (!apiKey) throw new Error("API Key missing");
     
+    const prompt = `Plan a ${days}-day trip to ${city}. Provide a theme for each day and details for morning, afternoon, and evening activities. Answer in Simplified Chinese (简体中文).`;
+
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
-            // Updated prompt to request Simplified Chinese
-            contents: `Plan a ${days}-day trip to ${city}. Format as a Markdown list with morning, afternoon, and evening activities. Include travel time estimates. Answer in Simplified Chinese (简体中文).`,
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: travelSchema,
+                systemInstruction: "You are a travel guide. Create detailed, structured travel itineraries in Simplified Chinese."
+            }
         });
-        return response.text || "Failed to generate itinerary.";
+        const text = response.text;
+        if (!text) return null;
+        return JSON.parse(text) as TravelItinerary;
     } catch (error) {
         console.error("Gemini Travel Error", error);
-        return "Error generating itinerary. Please check your API key.";
+        throw error;
     }
 }

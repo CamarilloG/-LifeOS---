@@ -5,6 +5,71 @@ import { generateRecipes } from '../services/geminiService';
 import { Recipe, SavedRecipe } from '../types';
 import { useLocalStorage } from '../utils/hooks';
 
+const SAMPLE_RECIPES: Recipe[] = [
+    {
+      name: "番茄滑蛋 (经典家常)",
+      description: "一道色香味俱全的国民家常菜，酸甜适口，蛋嫩汁浓，极其下饭。",
+      prepTime: "10分钟",
+      calories: 220,
+      ingredients: [
+          { name: "鸡蛋", amount: "3个" },
+          { name: "西红柿", amount: "2个 (中等大小)" },
+          { name: "小葱", amount: "1根" },
+          { name: "盐", amount: "1小勺" },
+          { name: "糖", amount: "1小勺" },
+          { name: "番茄酱", amount: "1大勺 (可选)" }
+      ],
+      instructions: [
+          "西红柿洗净切小块，鸡蛋打入碗中加少许盐打散，切葱花备用。",
+          "热锅凉油，油热后倒入蛋液，快速划散炒至凝固即可盛出。",
+          "锅中留底油，放入西红柿块，中小火煸炒出红油（可加一点番茄酱增加风味）。",
+          "加入炒好的鸡蛋，放入糖和盐调味，快速翻炒均匀。",
+          "撒上葱花，关火装盘。"
+      ]
+    },
+    {
+      name: "黑椒牛柳意面",
+      description: "中西结合的快手晚餐，牛肉鲜嫩多汁，黑椒风味浓郁。",
+      prepTime: "20分钟",
+      calories: 550,
+      ingredients: [
+          { name: "牛排/牛柳", amount: "200g" },
+          { name: "意大利面", amount: "150g" },
+          { name: "洋葱", amount: "1/4个" },
+          { name: "青椒", amount: "1个" },
+          { name: "黑胡椒酱", amount: "2大勺" },
+          { name: "生抽", amount: "1勺" }
+      ],
+      instructions: [
+          "牛肉切条，用生抽、淀粉、少许油腌制10分钟。洋葱青椒切丝。",
+          "烧一锅开水，加盐，放入意面煮8-10分钟至无硬芯，捞出拌油防粘。",
+          "热锅烧油，下入腌好的牛柳快速滑炒至变色盛出。",
+          "不用洗锅，放入洋葱青椒丝炒香，加入意面和牛肉。",
+          "加入黑胡椒酱和少许煮面水，大火翻炒均匀收汁即可。"
+      ]
+    },
+    {
+      name: "清爽牛油果沙拉",
+      description: "低卡健康的减脂餐首选，口感丰富，制作只需5分钟。",
+      prepTime: "5分钟",
+      calories: 180,
+      ingredients: [
+          { name: "牛油果", amount: "1个" },
+          { name: "水煮蛋", amount: "1个" },
+          { name: "黄瓜", amount: "半根" },
+          { name: "玉米粒", amount: "适量" },
+          { name: "低脂沙拉酱/油醋汁", amount: "适量" }
+      ],
+      instructions: [
+          "将鸡蛋煮熟剥壳切块。",
+          "牛油果对半切开去核，划十字刀取出果肉。",
+          "黄瓜切丁，与玉米粒（即食）混合。",
+          "将所有食材放入大碗中，淋上酱汁轻轻拌匀。",
+          "撒上少许黑胡椒颗粒风味更佳。"
+      ]
+    }
+];
+
 const RecipeApp: React.FC = () => {
   const [ingredients, setIngredients] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -28,6 +93,11 @@ const RecipeApp: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadSample = () => {
+      setIngredients("示例食材：鸡蛋, 西红柿, 牛肉...");
+      setRecipes(SAMPLE_RECIPES);
   };
 
   const saveRecipe = (recipe: Recipe) => {
@@ -71,6 +141,11 @@ const RecipeApp: React.FC = () => {
             {loading ? <i className="fas fa-spinner fa-spin"></i> : <><i className="fas fa-wand-magic-sparkles"></i> 开始生成</>}
           </Button>
         </form>
+        <div className="flex justify-center">
+            <button onClick={loadSample} className="text-sm text-orange-400 hover:text-orange-500 underline">
+                没有灵感？试试手气 (加载示例)
+            </button>
+        </div>
         {error && <p className="text-red-500 text-sm animate-shake">{error}</p>}
       </div>
 
@@ -84,7 +159,7 @@ const RecipeApp: React.FC = () => {
       )}
 
       {recipes.length > 0 && (
-          <div className="space-y-4 px-4">
+          <div className="space-y-4 px-4 animate-slide-up">
               <h3 className="text-xl font-bold flex items-center gap-2"><i className="fas fa-lightbulb text-yellow-500"></i> 为您推荐</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {recipes.map((recipe, idx) => (
