@@ -8,6 +8,16 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieCha
 const CATEGORIES = ['餐饮', '交通', '居住', '娱乐', '医疗', '购物', '工资', '理财', '其他'];
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#ef4444', '#8b5cf6', '#3b82f6', '#14b8a6', '#94a3b8'];
 
+const SAMPLE_TRANSACTIONS: Transaction[] = [
+    { id: 't1', amount: 15000, type: 'income', category: '工资', date: new Date().toISOString(), note: '11月薪资' },
+    { id: 't2', amount: 3500, type: 'expense', category: '居住', date: new Date().toISOString(), note: '房租' },
+    { id: 't3', amount: 58, type: 'expense', category: '餐饮', date: new Date().toISOString(), note: '麦当劳' },
+    { id: 't4', amount: 420, type: 'expense', category: '购物', date: new Date().toISOString(), note: '优衣库' },
+    { id: 't5', amount: 200, type: 'income', category: '理财', date: new Date().toISOString(), note: '基金收益' },
+    { id: 't6', amount: 35, type: 'expense', category: '交通', date: new Date().toISOString(), note: '打车' },
+    { id: 't7', amount: 1280, type: 'expense', category: '娱乐', date: new Date().toISOString(), note: '周末聚会' },
+];
+
 const FinanceApp: React.FC = () => {
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>('finance-logs', []);
   const [budget, setBudget] = useLocalStorage<Budget>('finance-budget', { limit: 5000, warningThreshold: 80 });
@@ -35,6 +45,10 @@ const FinanceApp: React.FC = () => {
     setTransactions(prev => [newTx, ...prev]);
     setAmount('');
     setNote('');
+  };
+
+  const loadSamples = () => {
+      setTransactions(SAMPLE_TRANSACTIONS);
   };
 
   const stats = useMemo(() => {
@@ -208,11 +222,20 @@ const FinanceApp: React.FC = () => {
 
         {/* Transaction List */}
         <div className="bg-white dark:bg-paper rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
-           <div className="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-800">
+           <div className="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-800 flex justify-between items-center">
              <h3 className="font-bold text-gray-700 dark:text-gray-200">账单明细</h3>
+             {transactions.length > 0 && <span className="text-xs text-gray-400">{transactions.length} 笔记录</span>}
            </div>
            <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[400px] overflow-y-auto custom-scrollbar">
-             {transactions.length === 0 && <p className="p-8 text-center text-gray-400">暂无记录。</p>}
+             {transactions.length === 0 && (
+                <div className="p-8 text-center text-gray-400 flex flex-col items-center">
+                    <i className="fas fa-file-invoice text-4xl mb-3 opacity-30"></i>
+                    <p className="mb-2">暂无记录。</p>
+                    <button onClick={loadSamples} className="text-primary hover:underline text-sm font-medium">
+                        加载演示数据
+                    </button>
+                </div>
+             )}
              {transactions.map(t => (
                <div key={t.id} className="p-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors group">
                  <div className="flex items-center gap-4">

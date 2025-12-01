@@ -133,26 +133,26 @@ const HealthApp: React.FC = () => {
            </div>
 
            <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-              <div className="relative w-32 h-32 flex items-center justify-center">
+              <div className="relative w-36 h-36 flex items-center justify-center">
                  {/* Circular Progress Background */}
-                 <svg className="w-full h-full transform -rotate-90">
-                    <circle cx="50%" cy="50%" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-blue-100 dark:text-blue-900/20" />
+                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-blue-100 dark:text-blue-900/20" />
                     <circle 
-                        cx="50%" cy="50%" r="60" 
+                        cx="50" cy="50" r="45" 
                         stroke="currentColor" strokeWidth="8" fill="transparent" 
-                        strokeDasharray={2 * Math.PI * 60}
-                        strokeDashoffset={2 * Math.PI * 60 * (1 - waterPercentage / 100)}
+                        strokeDasharray={2 * Math.PI * 45}
+                        strokeDashoffset={2 * Math.PI * 45 * (1 - waterPercentage / 100)}
                         className="text-blue-500 transition-all duration-500 ease-out"
                         strokeLinecap="round"
                     />
                  </svg>
                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">{waterCount}</span>
-                    <span className="text-xs text-gray-400">/ {waterGoal}</span>
+                    <span className="text-4xl font-bold text-blue-600 dark:text-blue-400">{waterCount}</span>
+                    <span className="text-sm text-gray-400">/ {waterGoal}</span>
                  </div>
               </div>
               {waterCount >= waterGoal && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center animate-bounce-in">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center animate-bounce-in pointer-events-none">
                       <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold shadow-sm">
                           🎉 目标达成!
                       </span>
@@ -229,15 +229,14 @@ const HealthApp: React.FC = () => {
               </div>
 
               <div className="flex-1 flex justify-center py-4">
-                  <div className="relative w-40 h-40 flex items-center justify-center">
+                  <div className="relative w-40 h-40 flex items-center justify-center cursor-pointer" onClick={toggleBreathing}>
                       {/* Ripple Effect */}
                       {isBreathing && (
                           <div className="absolute inset-0 rounded-full bg-teal-400/20 animate-ping"></div>
                       )}
                       {/* Main Breathing Circle */}
                       <div 
-                        onClick={toggleBreathing}
-                        className="bg-teal-500 dark:bg-teal-400 rounded-full flex items-center justify-center shadow-2xl shadow-teal-500/40 text-white font-bold transition-all duration-[4000ms] ease-in-out z-10 cursor-pointer hover:scale-105 active:scale-95"
+                        className="bg-teal-500 dark:bg-teal-400 rounded-full flex items-center justify-center shadow-2xl shadow-teal-500/40 text-white font-bold transition-all duration-[4000ms] ease-in-out z-10 hover:scale-105 active:scale-95"
                         style={{ 
                             width: isBreathing ? '100%' : '60%', 
                             height: isBreathing ? '100%' : '60%',
