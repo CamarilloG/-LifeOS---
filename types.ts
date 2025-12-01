@@ -106,6 +106,16 @@ export interface Flashcard {
   nextReviewDate: string; // ISO String
 }
 
+// Media Types
+export interface MediaItem {
+  id: string;
+  title: string;
+  type: 'book' | 'movie';
+  rating: number; // 0-5
+  status: 'todo' | 'done';
+  review?: string; // Optional review text
+}
+
 // Settings
 export interface UserSettings {
   theme: 'light' | 'dark';
