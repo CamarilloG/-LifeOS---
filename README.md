@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![LifeOS Banner]([https://via.placeholder.com/1200x300/6366f1/ffffff?text=LifeOS+%7C+Local-First+Personal+Operating+System](https://youke1.picui.cn/s1/2025/12/01/692da1d1789dc.png))
+![LifeOS Banner](https://youke1.picui.cn/s1/2025/12/01/692da1d1789dc.png)
 
 **一个应用，替代你的 12 个 App。**
 
@@ -12,7 +12,7 @@
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-3.0-38bdf8)
 ![Gemini AI](https://img.shields.io/badge/AI-Gemini%202.5-orange)
 
-[在线演示](https://your-demo-link.vercel.app) · [报告 Bug](https://github.com/yourusername/lifeos/issues) · [功能请求](https://github.com/yourusername/lifeos/issues)
+[在线演示](https://life-os-sandy.vercel.app/) · [报告 Bug](https://github.com/yourusername/lifeos/issues) · [功能请求](https://github.com/yourusername/lifeos/issues)
 
 </div>
 
