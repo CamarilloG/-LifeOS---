@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AppDefinition } from '../types';
 import { useDarkMode } from '../utils/hooks';
 import { useAuth } from '../context/AuthContext';
 import { AuthModal } from './AuthModal';
+import { SettingsModal } from './SettingsModal';
 import { Button } from './ui/Common';
 
 interface LayoutProps {
@@ -19,6 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
   // Auth State
   const { user, logout } = useAuth();
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   
   // Find current app for header title
@@ -34,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
           <span className="ml-3 font-bold text-xl hidden lg:block">LifeOS</span>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-4 space-y-1 px-2">
+        <div className="flex-1 overflow-y-auto py-4 space-y-1 px-2 custom-scrollbar">
           <Link to="/" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isHome ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
              <i className="fas fa-grid-2 w-6 text-center"></i>
              <span className="hidden lg:block font-medium">仪表盘</span>
@@ -53,7 +56,15 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
           ))}
         </div>
 
-        <div className="p-4 border-t border-gray-100 dark:border-gray-700">
+        <div className="p-4 border-t border-gray-100 dark:border-gray-700 space-y-2">
+          <button 
+            onClick={() => setSettingsModalOpen(true)}
+            className="w-full flex items-center justify-center lg:justify-start gap-3 px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          >
+            <i className="fas fa-cog w-6 text-center"></i>
+            <span className="hidden lg:block text-sm">系统设置</span>
+          </button>
+          
           <button 
             onClick={() => setDark(!isDark)}
             className="w-full flex items-center justify-center lg:justify-start gap-3 px-3 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -69,10 +80,6 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
         {/* Header (Mobile & Desktop) */}
         <header className="h-16 bg-white/80 dark:bg-paper/80 backdrop-blur-md sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700 px-4 flex items-center justify-between">
            <div className="flex items-center gap-3">
-             {/* Mobile Menu Trigger (Visual Only for now) */}
-             <button className="md:hidden text-gray-600 dark:text-gray-300">
-               <i className="fas fa-bars text-xl"></i>
-             </button>
              <h1 className="text-lg font-bold">
                {currentApp ? (
                  <span className="flex items-center gap-2">
@@ -111,7 +118,7 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
                                     <p className="text-sm font-bold truncate">{user.name}</p>
                                     <p className="text-xs text-gray-400 truncate">{user.email}</p>
                                 </div>
-                                <button className="w-full text-left px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800">
+                                <button onClick={() => { setSettingsModalOpen(true); setShowUserMenu(false); }} className="w-full text-left px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800">
                                     <i className="fas fa-cog mr-2"></i> 账号设置
                                 </button>
                                 <button 
@@ -158,14 +165,15 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
              <i className="fas fa-wallet text-lg"></i>
              <span className="text-[10px]">钱包</span>
           </Link>
-           <button onClick={() => setDark(!isDark)} className="flex flex-col items-center gap-1 text-gray-400">
-             <i className={`fas ${isDark ? 'fa-sun' : 'fa-moon'} text-lg`}></i>
-             <span className="text-[10px]">主题</span>
+           <button onClick={() => setSettingsModalOpen(true)} className="flex flex-col items-center gap-1 text-gray-400">
+             <i className="fas fa-cog text-lg"></i>
+             <span className="text-[10px]">设置</span>
           </button>
         </nav>
       </main>
 
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
+      <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setSettingsModalOpen(false)} />
     </div>
   );
 };
