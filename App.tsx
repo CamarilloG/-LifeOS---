@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HashRouter, Routes, Route, Link } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -36,27 +37,30 @@ const apps: AppDefinition[] = [
 ];
 
 const Dashboard = () => (
-  <div className="space-y-8">
+  <div className="space-y-6 md:space-y-8">
     <section>
-        <h2 className="text-3xl font-bold mb-2 text-gray-800 dark:text-white">欢迎回来</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">这是您今天的效率工具箱。</p>
+        <div className="mb-4 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-1 text-gray-800 dark:text-white">欢迎回来</h2>
+            <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">这是您今天的效率工具箱。</p>
+        </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* Mobile Optimized Grid: Double column on mobile (gap-2), more on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4">
         {apps.map(app => (
             <Link key={app.id} to={app.path} className="group">
-                <Card className="h-full hover:-translate-y-1 transition-transform duration-200 border-2 border-transparent hover:border-primary/20">
-                    <div className="flex items-start justify-between mb-4">
-                        <div className={`w-12 h-12 rounded-xl bg-gray-50 dark:bg-slate-700 flex items-center justify-center text-2xl ${app.color} group-hover:scale-110 transition-transform`}>
+                <Card className="h-full hover:-translate-y-1 transition-transform duration-200 border-2 border-transparent hover:border-primary/20 p-3 md:p-6 shadow-sm hover:shadow-md bg-white dark:bg-paper">
+                    <div className="flex items-start justify-between mb-2 md:mb-4">
+                        <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 dark:bg-slate-700 flex items-center justify-center text-xl md:text-2xl ${app.color} group-hover:scale-110 transition-transform`}>
                             <i className={`fas ${app.icon}`}></i>
                         </div>
                         {app.isAI && (
-                            <span className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <span className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-sm">
                                 AI
                             </span>
                         )}
                     </div>
-                    <h3 className="font-bold text-lg mb-1 text-gray-900 dark:text-white group-hover:text-primary transition-colors">{app.name}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{app.description}</p>
+                    <h3 className="font-bold text-sm md:text-lg mb-0.5 md:mb-1 text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">{app.name}</h3>
+                    <p className="text-[10px] md:text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2 md:line-clamp-2">{app.description}</p>
                 </Card>
             </Link>
         ))}
