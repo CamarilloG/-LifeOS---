@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AppDefinition } from '../types';
 import { useDarkMode } from '../utils/hooks';
+import { useAuth } from '../context/AuthContext';
+import { AuthModal } from './AuthModal';
+import { Button } from './ui/Common';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +15,11 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
   const [isDark, setDark] = useDarkMode();
   const location = useLocation();
   const isHome = location.pathname === '/';
+  
+  // Auth State
+  const { user, logout } = useAuth();
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   
   // Find current app for header title
   const currentApp = apps.find(a => a.path === location.pathname);
@@ -76,16 +84,59 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
            </div>
            
            <div className="flex items-center gap-4">
-             {/* API Key Status (Mock) */}
-             <div className="hidden sm:flex items-center gap-2 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full border border-green-200 dark:border-green-800">
-               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-               系统在线
-             </div>
-             
-             {/* Profile Avatar */}
-             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white dark:ring-gray-800 cursor-pointer">
-               U
-             </div>
+             {user ? (
+                // Logged In State
+                <div className="relative">
+                    <div 
+                        className="flex items-center gap-3 cursor-pointer p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors pr-3"
+                        onClick={() => setShowUserMenu(!showUserMenu)}
+                    >
+                        <div className="hidden sm:flex flex-col items-end">
+                            <span className="text-xs font-bold text-gray-700 dark:text-gray-200">{user.name}</span>
+                            <span className="text-[10px] text-green-500 flex items-center gap-1">
+                                <i className="fas fa-check-circle"></i> 已同步
+                            </span>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-white text-xs font-bold ring-2 ring-white dark:ring-gray-800">
+                            {user.avatar || user.name[0]}
+                        </div>
+                    </div>
+                    
+                    {/* User Dropdown */}
+                    {showUserMenu && (
+                        <>
+                            <div className="fixed inset-0 z-10" onClick={() => setShowUserMenu(false)}></div>
+                            <div className="absolute right-0 top-12 w-48 bg-white dark:bg-paper rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-20 animate-scale-in">
+                                <div className="px-4 py-2 border-b border-gray-100 dark:border-gray-700 mb-2">
+                                    <p className="text-sm font-bold truncate">{user.name}</p>
+                                    <p className="text-xs text-gray-400 truncate">{user.email}</p>
+                                </div>
+                                <button className="w-full text-left px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800">
+                                    <i className="fas fa-cog mr-2"></i> 账号设置
+                                </button>
+                                <button 
+                                    onClick={() => { logout(); setShowUserMenu(false); }}
+                                    className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10"
+                                >
+                                    <i className="fas fa-sign-out-alt mr-2"></i> 退出登录
+                                </button>
+                            </div>
+                        </>
+                    )}
+                </div>
+             ) : (
+                // Guest State
+                <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setAuthModalOpen(true)}
+                    className="bg-gray-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                >
+                    <i className="fas fa-cloud mr-2"></i>
+                    <span className="hidden sm:inline">启用云同步</span>
+                    <span className="sm:hidden">同步</span>
+                </Button>
+             )}
            </div>
         </header>
 
@@ -113,6 +164,8 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
           </button>
         </nav>
       </main>
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setAuthModalOpen(false)} />
     </div>
   );
 };

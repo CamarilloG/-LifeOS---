@@ -10,6 +10,14 @@ export interface AppDefinition {
   isAI?: boolean;
 }
 
+// Auth Types
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+}
+
 // Pomodoro Types
 export interface Task {
   id: string;

@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Link } from 'react-router-dom';
 import Layout from './components/Layout';
 import { AppDefinition } from './types';
 import { Card } from './components/ui/Common';
+import { AuthProvider } from './context/AuthContext';
 
 // App Imports
 import PomodoroApp from './apps/PomodoroApp';
@@ -66,25 +67,27 @@ const Dashboard = () => (
 
 const App: React.FC = () => {
   return (
-    <HashRouter>
-      <Layout apps={apps}>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/pomodoro" element={<PomodoroApp />} />
-          <Route path="/finance" element={<FinanceApp />} />
-          <Route path="/recipe" element={<RecipeApp />} />
-          <Route path="/travel" element={<TravelApp />} />
-          <Route path="/split" element={<SplitApp />} />
-          <Route path="/flashcards" element={<FlashcardApp />} />
-          <Route path="/matrix" element={<MatrixApp />} />
-          <Route path="/mood" element={<MoodApp />} />
-          <Route path="/books" element={<MediaApp />} />
-          <Route path="/health" element={<HealthApp />} />
-          <Route path="/course" element={<CourseApp />} />
-          <Route path="/groceries" element={<GroceryApp />} />
-        </Routes>
-      </Layout>
-    </HashRouter>
+    <AuthProvider>
+      <HashRouter>
+        <Layout apps={apps}>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/pomodoro" element={<PomodoroApp />} />
+            <Route path="/finance" element={<FinanceApp />} />
+            <Route path="/recipe" element={<RecipeApp />} />
+            <Route path="/travel" element={<TravelApp />} />
+            <Route path="/split" element={<SplitApp />} />
+            <Route path="/flashcards" element={<FlashcardApp />} />
+            <Route path="/matrix" element={<MatrixApp />} />
+            <Route path="/mood" element={<MoodApp />} />
+            <Route path="/books" element={<MediaApp />} />
+            <Route path="/health" element={<HealthApp />} />
+            <Route path="/course" element={<CourseApp />} />
+            <Route path="/groceries" element={<GroceryApp />} />
+          </Routes>
+        </Layout>
+      </HashRouter>
+    </AuthProvider>
   );
 };
 
