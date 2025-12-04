@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
 
         <div className="flex-1 overflow-y-auto py-4 space-y-1 px-2 custom-scrollbar">
           <Link to="/" className={`flex items-center gap-3 px-3 py-3 md:py-2 rounded-lg transition-colors ${isHome ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>
-             <div className="w-6 flex justify-center"><i className="fas fa-grid-2 text-lg"></i></div>
+             <div className="w-6 flex justify-center"><i className="fas fa-house text-lg"></i></div>
              <span className="md:hidden lg:block font-medium">仪表盘</span>
           </Link>
           
@@ -188,7 +188,7 @@ const Layout: React.FC<LayoutProps> = ({ children, apps }) => {
         {/* Mobile Bottom Nav */}
         <nav className="md:hidden fixed bottom-0 w-full bg-white/85 dark:bg-paper/90 backdrop-blur-xl border-t border-gray-200 dark:border-gray-700 flex justify-around pt-3 pb-safe-nav z-30 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
           <Link to="/" className={`flex flex-col items-center gap-1 px-3 rounded-xl transition-colors ${isHome ? 'text-primary' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800'}`}>
-             <i className="fas fa-grid-2 text-xl"></i>
+             <i className="fas fa-house text-xl"></i>
              <span className="text-[10px] font-medium">首页</span>
           </Link>
           <Link to="/pomodoro" className={`flex flex-col items-center gap-1 px-3 rounded-xl transition-colors ${location.pathname === '/pomodoro' ? 'text-primary' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800'}`}>
